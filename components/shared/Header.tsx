@@ -1,4 +1,4 @@
-import { SignInButton, SignedOut } from '@clerk/nextjs'
+import { SignInButton, SignedIn, SignedOut } from '@clerk/nextjs'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
@@ -21,11 +21,11 @@ const Header = () => {
 
         <div className="flex w-32 justify-end gap-3">
           <SignedOut>
-            <Button asChild className="rounded-full" size="lg">
-              <Link href="/sign-in">
+            <SignInButton mode="modal">
+              <Button className="rounded-full" size="lg">
                 Login
-              </Link>
-            </Button>
+              </Button>
+            </SignInButton>
           </SignedOut>
         </div>
       </div>
