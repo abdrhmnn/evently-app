@@ -1,11 +1,26 @@
+import Collection from "@/components/shared/Collection";
 import { Button } from "@/components/ui/button";
+import { getAllEvents } from "@/lib/actions/event.action";
+import { SearchParamProps } from "@/types";
 import Image from "next/image";
 import Link from "next/link";
 
 // penamaan folder dengan menggunakan () itu fungsi nya untuk grouping route
 // jadi untuk aplikasi terlihat clean 
 
-export default function Home() {
+export default async function Home({ searchParams }: SearchParamProps) {
+  const page = Number(searchParams?.page) || 1;
+  const searchText = (searchParams?.query as string) || '';
+  const category = (searchParams?.category as string) || '';
+
+  const events = await getAllEvents({
+    query: searchText,
+    category,
+    page,
+    limit: 6
+  })
+
+
   return (
     <>
       <section className="bg-primary-50 bg-dotted-pattern bg-contain py-5 md:py-10">
@@ -15,7 +30,7 @@ export default function Home() {
               className="font-bold text-4xl md:text-5xl"
             >Host, Connect, Celebrate: Your Events, Our Platform
             </h1>
-            <p className="p-regular-10 md:p-regular-24">Book and learn helpful tips from 3,168+ mentors in world-class companies with our global community.</p>
+            <p className="p-regular-10 md:p-regular-24">Book and learn helpful tips from a thousand mentors in world-class companies with our global community.</p>
             <Button size="lg" asChild className="button w-full sm:w-fit">
               <Link href="/events">
                 Explore Now
@@ -39,6 +54,16 @@ export default function Home() {
           Search
           CategoryFilter
         </div>
+
+        <Collection 
+          data={events?.data}
+          emptyTitle="No Events Found"
+          emptyStateSubtext="Come back later"
+          collectionType="All_Events"
+          limit={6}
+          page={page}
+          totalPages={2}
+        />
       </section>
 
       {/* bisa menambahkan style sendiri secara langsung */}
